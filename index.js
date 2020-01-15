@@ -15,7 +15,11 @@ app.use(bodyParser.json())
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 } }))
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
-app.get('/', (req, res) => res.render("landing"))
+app.get('/', async (req, res) => {
+    const data = await Queue.fetchAll();
+    // console.log(data)
+    res.render("landing", { data: data.models })
+})
 app.get('/logout', (req, res) => {
 
     req.session.user = ""
@@ -366,7 +370,7 @@ app.post('/savequeue', async (req, res) => {
                 ongoing: true,
                 pageToken: "",
                 autoOrManual: "",
-                username: channel.attributes.username,
+                username: channel.attributes.title,
 
             }).save()
             if (selesai) {
