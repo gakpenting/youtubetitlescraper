@@ -10,13 +10,40 @@ const RemoveWord = require('./models/removeWord');
 const User = require('./models/user');
 const Queue = require('./models/queue');
 const lib = require('./panda')
+var session = require('express-session')
 app.use(bodyParser.json())
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 } }))
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render("landing"))
-app.get('/admin', (req, res) => res.render("admin", { tipe: "dashboard" }))
-app.get('/removeword', (req, res) => res.render("remove_word", { tipe: "removeword" }))
-app.get('/channels', (req, res) => res.render("channel", { tipe: "channels" }))
+app.get('/logout', (req, res) => {
+
+    req.session.user = ""
+    return res.redirect("/login")
+})
+app.get('/login', (req, res) => {
+
+    if (req.session.user !== "" && req.session.user !== undefined) {
+        return res.redirect("/admin")
+    }
+    return res.render("login")
+})
+app.get('/admin', (req, res) => {
+    if (req.session.user === "" || req.session.user === undefined) return res.redirect("/login")
+    return res.render("admin", { tipe: "dashboard" })
+})
+app.get('/user', (req, res) => {
+    if (req.session.user === "" || req.session.user === undefined) return res.redirect("/login")
+    return res.render("user", { tipe: "user" })
+})
+app.get('/removeword', (req, res) => {
+    if (req.session.user === "" || req.session.user === undefined) return res.redirect("/login")
+    return res.render("remove_word", { tipe: "removeword" })
+})
+app.get('/channels', (req, res) => {
+    if (req.session.user === "" || req.session.user === undefined) return res.redirect("/login")
+    return res.render("channel", { tipe: "channels" })
+})
 app.get('/json', async (req, res) => res.json(await youtubeSearch(req.query.channel)))
 app.get('/byTime', async (req, res) => res.json(await youtubeSearchByTime(req.query.language, req.query.publishedAfter, req.query.publishedBefore, req.query.channelId)))
 app.get('/channelToken', async (req, res) => res.json(await youtubeSearchNextPage(req.query.val, req.query.channelToken)))
@@ -32,6 +59,23 @@ app.get('/allremoveword', async (req, res) => {
 
     const next_page_url = hasil.meta.pagination.links.next !== null ? `/allremoveword?page=${hasil.meta.pagination.links.next}` : hasil.meta.pagination.links.next
     const prev_page_url = hasil.meta.pagination.links.previous !== null ? `/allremoveword?page=${hasil.meta.pagination.links.previous}` : hasil.meta.pagination.links.previous
+    const to = current_page * per_page
+    const from = to - last_page
+    const data = hasil.data
+
+    res.json({ total, per_page, current_page, last_page, next_page_url, prev_page_url, from, to, data })
+})
+app.get('/alluser', async (req, res) => {
+    const page = req.query.page === undefined ? 1 : req.query.page;
+
+    const hasil = await User.simplePaginate({ page: page })
+    const total = await User.count()
+    const last_page = Math.ceil(total / hasil.meta.pagination.per_page)
+    const per_page = hasil.meta.pagination.per_page
+    const current_page = hasil.meta.pagination.current_page
+
+    const next_page_url = hasil.meta.pagination.links.next !== null ? `/alluser?page=${hasil.meta.pagination.links.next}` : hasil.meta.pagination.links.next
+    const prev_page_url = hasil.meta.pagination.links.previous !== null ? `/alluser?page=${hasil.meta.pagination.links.previous}` : hasil.meta.pagination.links.previous
     const to = current_page * per_page
     const from = to - last_page
     const data = hasil.data
@@ -347,6 +391,26 @@ app.post('/saveremoveword', async (req, res) => {
         res.json({ status: false })
     }
 })
+app.post('/saveuser', async (req, res) => {
+    var bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    const pass = await new Promise((resolve, reject) => {
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+            resolve(hash)
+            reject(err)
+        })
+    })
+    const sukses = await User.forge({
+        username: req.body.username,
+        pass: pass,
+        privilage: req.body.privilage
+    }).save()
+    if (sukses) {
+        res.json({ status: true })
+    } else {
+        res.json({ status: false })
+    }
+})
 app.get('/deletechannel/:id', async (req, res) => {
     // res.send(req.params.id)
     const sukses = await Channel.forge({ id: req.params.id }).destroy()
@@ -365,7 +429,15 @@ app.get('/deleteremoveword/:id', async (req, res) => {
         res.json({ status: false })
     }
 })
-
+app.get('/deleteuser/:id', async (req, res) => {
+    // res.send(req.params.id)
+    const sukses = await User.forge({ id: req.params.id }).destroy()
+    if (sukses) {
+        res.json({ status: true })
+    } else {
+        res.json({ status: false })
+    }
+})
 app.post('/updatechannel/:id', async (req, res) => {
     try {
         const url = new URL(req.body.url);
@@ -425,6 +497,29 @@ app.post('/updatechannel/:id', async (req, res) => {
     }
 
 })
+
+app.post('/updateuser/:id', async (req, res) => {
+    var bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    const pass = await new Promise((resolve, reject) => {
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+            resolve(hash)
+            reject(err)
+        })
+    })
+    const sukses = await User.forge({
+        id: req.params.id
+    }).save({
+        username: req.body.username,
+        pass: pass,
+        privilage: req.body.privilage
+    })
+    if (sukses) {
+        res.json({ status: true })
+    } else {
+        res.json({ status: false })
+    }
+})
 app.post('/updateremoveword/:id', async (req, res) => {
     const sukses = await RemoveWord.forge({ id: req.params.id }).save({ real_word: req.body.real_word })
     if (sukses) {
@@ -433,6 +528,34 @@ app.post('/updateremoveword/:id', async (req, res) => {
         res.json({ status: false })
     }
 })
+app.post('/cekform', async (req, res) => {
+    const bcrypt = require("bcrypt")
+    const cek = await User.where({ username: req.body.username }).count()
+    if (cek === 1) {
+        const password = await User.where({ username: req.body.username }).fetch()
+        const passs = await new Promise((resolve, reject) => {
+            bcrypt.compare(req.body.password, password.attributes.pass, function (err, res) {
+                if (res) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                    // Passwords don't match
+                }
+                reject(err)
+            });
+        })
+        if (passs) {
+            req.session.user = password
+            res.json({ status: true })
+        } else {
+            res.json({ status: false })
+        }
+
+    } else {
+        res.json({ status: false })
+    }
+})
+
 app.get('/video', async (req, res) => {
     const video = await Video.fetchAll()
     res.json({ video })

@@ -5,6 +5,7 @@ exports.up = function (knex) {
             table.increments('id').primary();
             table.string('username');
             table.string('pass');
+            table.string('privilage');
 
         });
 };

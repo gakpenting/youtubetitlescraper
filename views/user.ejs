@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Analytics Dashboard </title>
+    <title>User Dashboard </title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="Youtube analytics dashboard">
@@ -79,7 +79,6 @@
                                             class="dropdown-menu dropdown-menu-right">
                                             <a href="/logout"><button type="button" tabindex="0"
                                                     class="dropdown-item">Logout</button></a>
-
                                         </div>
                                     </div>
                                 </div>
@@ -547,7 +546,7 @@
                                     <i class="pe-7s-car icon-gradient bg-mean-fruit">
                                     </i>
                                 </div>
-                                <div>Analytics Dashboard
+                                <div>User Dashboard
                                     <div class="page-title-subheading">Youtube analytics dashboard
                                     </div>
                                 </div>
@@ -555,190 +554,46 @@
 
                         </div>
                         <div>
-                            <!-- <div class="input-group mt-5">
-                                <div class="input-group-prepend">
+                            <div class="input-group mt-5">
+                                <!-- <div class="input-group-prepend">
                                     <div class="input-group-text">
                                         <i class="fa fa-search"></i>
                                     </div>
-                                </div>
-                                <input placeholder="Search Channel..." v-on:keyup.enter="searchChannel"
-                                    v-model="dataChannel" type="text" class="form-control">
-                            </div> -->
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            <button class="btn-wide mb-2 mr-2 btn btn-primary btn-lg" @click="saveRemoveWord">Add
-                                Channel to be scraped
-                            </button>
-                            <vuetable ref="vuetable" api-url="/allqueue" :fields="fields"
-                                detail-row-component="detail-row" pagination-path=""
-                                @vuetable:pagination-data="onPaginationData" @vuetable:cell-clicked="onCellClicked">
-                                <template slot="actions" scope="props">
-                                    <div class="table-button-container">
-                                        <span v-if="props.rowData.autoOrManual==='manual'">PLEASE
-                                            WAIT<button class="ui button bg-danger" @click="stopManual(props.rowData)">
-                                                STOP</button></span>
-                                        <button v-if="props.rowData.autoOrManual==='auto'" class="ui button bg-danger"
-                                            @click="stopJob(props.rowData)">
-                                            STOP</button>
-                                        <button v-if="props.rowData.autoOrManual===''" class="ui button"
-                                            @click="editRow(props.rowData)"><i class="fa fa-edit"></i>
-                                            Auto</button>
-                                        <button v-if="props.rowData.autoOrManual===''" class="ui basic red button"
-                                            @click="deleteRow(props.rowData)"><i class="fa fa-remove"></i>
-                                            manual</button>
-                                    </div>
-                                </template>
-                            </vuetable>
-                            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage">
-                            </vuetable-pagination>
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-xl-4" v-if="totalResults!==0">
-                            <div class="card mb-3 widget-content ">
-                                <div class="widget-content-wrapper ">
-                                    <div class="widget-content-left">
-                                        <div class="widget-heading">Total Results</div>
-                                        <div class="widget-subheading"></div>
-                                    </div>
-                                    <div class="widget-content-right">
-                                        <div class="widget-numbers "><span>{{totalResults}}</span></div>
-                                    </div>
-                                </div>
+                                </div> -->
+                                <!-- <input placeholder="Search Channel..." type="text" class="form-control"> -->
                             </div>
                         </div>
-
-                    </div>
-                    <div class="mb-3 card" v-if="youtubeChannel.length>0">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-                                Search Result
-                            </div>
-
-                        </div>
-
-                        <div class="text-center d-block p-3 card-footer">
-                            <div class="row">
-
-                                <div :style="item.style" @click="clickChannel(i)" class="col-md-6 col-xl-4"
-                                    v-for="(item,i) in youtubeChannel" :key="i">
-                                    <div class="card mb-3 widget-content ">
-                                        <div class="widget-content-wrapper ">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">{{item.snippet.channelTitle}}</div>
-                                                <div class="widget-subheading">{{item.snippet.description}}</div>
-                                                <img :src="item.snippet.thumbnails.default.url" width="200"
-                                                    height="200">
-                                            </div>
-                                            <div>estimated total videos: {{}}</div>
-
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                <button class="btn-wide mb-2 mr-2 btn btn-primary btn-lg" @click="saveRemoveWord">Add
+                                    User
+                                </button>
+                                <vuetable ref="vuetable" api-url="/alluser" :fields="fields" pagination-path=""
+                                    @vuetable:pagination-data="onPaginationData">
+                                    <template slot="actions" scope="props">
+                                        <div class="table-button-container">
+                                            <button class="ui button" @click="editRow(props.rowData)"><i
+                                                    class="fa fa-edit"></i>
+                                                Edit</button>&nbsp;&nbsp;
+                                            <button v-if="props.rowData.privilage!=='admin'" class="ui basic red button"
+                                                @click="deleteRow(props.rowData)"><i class="fa fa-remove"></i>
+                                                Delete</button>&nbsp;&nbsp;
                                         </div>
-                                    </div>
-                                </div>
+                                    </template>
+                                </vuetable>
+                                <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage">
+                                </vuetable-pagination>
+                            </div>
 
-                            </div>
-                            <div class="row d-block text-center" v-if="youtubeChannel.length!==0">
-                                <div class="d-block text-center card-footer"><button
-                                        @click="prevChannel(prevChannelToken)"
-                                        class="mr-2 btn-icon btn-icon-only btn btn-success"
-                                        v-if="prevChannelToken.trim()!==''">Previous</button>
-                                    <button @click="nextChannel(nextChannelToken)" class="btn-wide btn btn-success"
-                                        v-if="nextChannelToken.trim()!==''">Next</button></div>
-                            </div>
 
                         </div>
+
                     </div>
 
 
-                    <div class="mb-3 card" v-if="youtubeChannel.filter(a=>a.style.backgroundColor==='blue').length>0">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-                                Pick Time Frame
-                            </div>
 
-                        </div>
 
-                        <div class="text-center d-block p-3 card-footer">
 
-                            <button @click="searchVideo('24Hours')"
-                                :class="selectedTime === '24Hours' ? 'btn-success btn-lg':'btn-primary btn-lg'">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">Last 24 Hours</span>
-                            </button>
-                            <button @click="searchVideo('lastWeek')"
-                                :class="selectedTime==='lastWeek'?'btn-success btn-lg':'btn-primary btn-lg'">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">Last Week</span>
-                            </button>
-                            <button @click="searchVideo('last1Month')"
-                                :class="selectedTime==='last1Month'?'btn-success btn-lg':'btn-primary btn-lg'">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">Last 1 Month</span>
-                            </button>
-                            <button @click="searchVideo('last12Month')"
-                                :class="selectedTime==='last12Month'?'btn-success btn-lg':'btn-primary btn-lg'">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">Last 12 Month</span>
-                            </button>
-                            <button @click="searchVideo('allTime')"
-                                :class="selectedTime==='allTime'?'btn-success btn-lg':'btn-primary btn-lg'">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">All Time</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-3 card" v-if="selectedTime!==''">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-                                Select Language
-                            </div>
-
-                        </div>
-
-                        <div class="text-center d-block p-3 card-footer">
-                            <select class="mb-2 form-control-lg form-control" v-model="selectedLanguage">
-                                <option value=""></option>
-                                <option v-for="(item,i) in country" :key="i" :value="item.language">{{item.name}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3 card" v-if="selectedLanguage!==''">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-                                Calculate
-                            </div>
-
-                        </div>
-
-                        <div class="text-center d-block p-3 card-footer">
-                            <button @click="calculateVideo"
-                                class="btn-pill btn-shadow btn-wide fsize-1 btn btn-primary btn-lg">
-                                <span class="mr-2 opacity-7">
-                                    <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
-                                </span>
-                                <span class="mr-1">Calculate</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
                 <div class="app-wrapper-footer">
                     <div class="app-footer">
@@ -787,7 +642,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
     <script src="https://rawgit.com/ratiw/vuetable-2/develop/dist/vuetable-2.js"></script>
-    <script src="admin.js"></script>
+    <script src="user.js"></script>
 </body>
 
 </html>

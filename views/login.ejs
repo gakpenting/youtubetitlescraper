@@ -1,0 +1,40 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="page-login" id="app">
+    <div class="ui centered grid container">
+        <div class="nine wide column">
+            <div class="ui icon warning message" v-if="loginFailed">
+                <i class="lock icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Login failed!
+                    </div>
+                    <p>You might have misspelled your username or password!</p>
+                </div>
+            </div>
+            <div class="ui fluid card">
+                <div class="content">
+                    <form class="ui form" @submit.prevent="checkForm">
+                        <div class="field">
+                            <label>User</label>
+                            <input type="text" name="user" placeholder="User" v-model="username">
+                        </div>
+                        <div class="field">
+                            <label>Password</label>
+                            <input type="password" name="pass" placeholder="Password" v-model="pass">
+                        </div>
+                        <button class="ui primary labeled icon button" @click="checkForm" type="submit">
+                            <i class="unlock alternate icon"></i>
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
+<script src="login.js"></script>
