@@ -12,7 +12,7 @@ const Queue = require('./models/queue');
 const lib = require('./panda')
 var session = require('express-session')
 app.use(bodyParser.json())
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 } }))
+app.use(session({ secret: 'keyboard cat' }))
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.get('/', async (req, res) => {
