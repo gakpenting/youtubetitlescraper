@@ -579,15 +579,15 @@
                                         <span v-if="props.rowData.autoOrManual==='manual'">PLEASE
                                             WAIT<button class="ui button bg-danger" @click="stopManual(props.rowData)">
                                                 STOP</button></span>
-                                        <button v-if="props.rowData.autoOrManual==='auto'" class="ui button bg-danger"
+                                        <!-- <button v-if="props.rowData.autoOrManual==='auto'" class="ui button bg-danger"
                                             @click="stopJob(props.rowData)">
                                             STOP</button>
                                         <button v-if="props.rowData.autoOrManual===''" class="ui button"
                                             @click="editRow(props.rowData)"><i class="fa fa-edit"></i>
-                                            Auto</button>
+                                            Auto</button> -->
                                         <button v-if="props.rowData.autoOrManual===''" class="ui basic red button"
                                             @click="deleteRow(props.rowData)"><i class="fa fa-remove"></i>
-                                            manual</button>
+                                            SCRAPE NOW</button>
                                     </div>
                                 </template>
                             </vuetable>
