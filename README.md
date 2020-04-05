@@ -1,5 +1,7 @@
 # YOUTUBE TITLE SCRAPER FROM A CHANNEL USING YOUTUBE API AND NODEJS
 
+[![donatepaypal](https://img.shields.io/badge/PAYPAL-DONATE-brightgreen?style=for-the-badge&logo=paypal)](https://paypal.me/rinoakbr)
+
 this repository created for scraping using youtube api and nodejs you can scrape youtube title as much as 500 video beacuse youtube has limitation for how many video we can scrape except you can login with using your api, you can scrape the video you own as much as you can but for the other video from other channel you should ask for permission of the channel owner to scrape
 
 ## DEMO
