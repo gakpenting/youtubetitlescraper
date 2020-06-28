@@ -22,12 +22,16 @@
     "underscore": "^1.9.2",
     "unescape": "^1.0.1",
     "utf8": "^3.0.0",
-    "yargs": "^15.1.0"
+    "yargs": "^15.1.0",
+    "snyk": "^1.349.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": "12.x"
-  }
+  },
+  "snyk": true
 }
