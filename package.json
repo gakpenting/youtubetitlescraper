@@ -14,7 +14,7 @@
     "fkill": "^6.2.0",
     "google-translate-api": "^2.3.0",
     "google-translate-token": "^1.0.0",
-    "knex": "^0.21.1",
+    "knex": "^0.95.0",
     "node-html-parser": "^1.1.18",
     "puppeteer": "^2.0.0",
     "sqlite3": "^4.1.1",
