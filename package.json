@@ -16,7 +16,7 @@
     "google-translate-token": "^1.0.0",
     "knex": "^0.21.1",
     "node-html-parser": "^1.1.18",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "^3.0.0",
     "sqlite3": "^4.1.1",
     "tor-request": "^3.1.0",
     "underscore": "^1.9.2",
